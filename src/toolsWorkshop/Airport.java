@@ -78,12 +78,19 @@ public class Airport {
 		return "Airport [name=" + name + ", location=" + location + "]";
 	}
 
-	public void sortFlights() {
+	public void sortFlightsByTime() {
 		Collections.sort(departures, new SortByTime());
 		Collections.sort(arrivals, new SortByTime());
 		Collections.sort(allFlights, new SortByTime());
 
 	}
+	
+	public void sortFlightsByCompany() {
+		Collections.sort(departures, new SortByCompany());
+		Collections.sort(arrivals, new SortByCompany());
+		Collections.sort(allFlights, new SortByCompany());
+	}
+
 
 	public String flightsToString(Flight.FlightType type) {
 		ArrayList<Flight> flights;

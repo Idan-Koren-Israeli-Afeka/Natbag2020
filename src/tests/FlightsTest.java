@@ -24,7 +24,7 @@ class FlightsTest {
 		expectedResult2.append("Flight number 1243a by El Al, from Tel Aviv to London, at 22/7/2020, on 15:30\n");
 		expectedResult2.append("Flight number 64a21 by Airlines, from New York to Tel Aviv, at 23/7/2020, on 18:45\n");
 
-		airport.sortFlights();
+		airport.sortFlightsByTime();
 
 		assertEquals(expectedResult2.toString(), airport.allFlightsToString());
 	}

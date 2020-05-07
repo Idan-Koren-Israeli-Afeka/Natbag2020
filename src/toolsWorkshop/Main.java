@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -27,36 +28,65 @@ public class Main {
 					+ "4. Show arrivals flights information (sorted by time)\n"
 					+ "5. Save flights to file\n"
 					+ "6. Load flights from a file\n"
+					+ "7. Show depratures between dates\n"
+					+ "8. Show arrivals between dates\n"
+					+ "9. Show departures by company\n"
+					+ "10. Show arrivals by company\n"
+					+ "11. Show departures by day of week\n"
+					+ "12. Show arrivals by day of week\n"
 					+ "Press any other key to finish");
 			
-			char option = in.next().charAt(0);
+			int option = in.nextInt();
 			switch(option) {
-			case '1':
+			case 1:
 				//add departure flight
 				addNewFlight(Flight.FlightType.Departure, in, airport);
 				break;
-			case '2':
+			case 2:
 				//add arrival flight
 				addNewFlight(Flight.FlightType.Arrival, in, airport);
 				break;
-			case '3':
+			case 3:
 				// show departures
-				airport.sortFlights();
+				airport.sortFlightsByTime();
 				System.out.println(airport.flightsToString(Flight.FlightType.Departure));
 				break;
-			case '4':
-				airport.sortFlights();
+			case 4:
+				airport.sortFlightsByTime();
 				System.out.println(airport.flightsToString(Flight.FlightType.Arrival));
 				break;
-			case '5':
+			case 5:
 				//save to file
 				saveFlights(airport);
 				break;
-			case '6':
+			case 6:
 				//load from file
 				loadFlights(airport);
 				break;
-			
+			case 7:
+				//show flights from start date to end date
+				showFlightsInDates(Flight.FlightType.Departure, in, airport);
+				break;
+			case 8:
+				//show flights from start date to end date
+				showFlightsInDates(Flight.FlightType.Arrival, in, airport);
+				break;
+			case 9:
+				//show flights from start date to end date
+				showFlightsOfCompany(Flight.FlightType.Departure, in, airport);
+				break;
+			case 10:
+				//show flights from start date to end date
+				showFlightsOfCompany(Flight.FlightType.Arrival, in, airport);
+				break;
+			case 11:
+				//show flights from start date to end date
+				showFlightsByDayOfWeek(Flight.FlightType.Departure, in, airport);
+				break;
+			case 12:
+				//show flights from start date to end date
+				showFlightsByDayOfWeek(Flight.FlightType.Arrival, in, airport);
+				break;
 			default:
 				stopMenu = true;
 				break;
@@ -150,4 +180,106 @@ public class Main {
 			System.out.println("Load exception: File \"flights.obj\" does not contain flights data!");
 		}
 	}
+	
+
+	private static void showFlightsInDates(Flight.FlightType type, Scanner in, Airport airport) {
+		System.out.println("enter starting date:");
+		System.out.println("Please enter year");
+		int year = in.nextInt();
+		
+		System.out.println("Please enter month");
+		int month = in.nextInt() - 1;
+		
+		System.out.println("Please enter day (in month)");
+		int day = in.nextInt();
+		
+		
+		@SuppressWarnings("deprecation")
+		Date startDate = new Date(year,month,day,00,00);
+		
+		System.out.println("enter ending date:");
+		System.out.println("Please enter year");
+		year = in.nextInt();
+		
+		System.out.println("Please enter month");
+		month = in.nextInt() - 1;
+		
+		System.out.println("Please enter day (in month)");
+		day = in.nextInt();
+		
+		
+		@SuppressWarnings("deprecation")
+		Date endDate = new Date(year,month,day,23,59,59);
+		
+		airport.sortFlightsByTime();
+		
+		ArrayList<Flight> array;
+		if(type == Flight.FlightType.Arrival)
+			array = airport.getArrivals();
+		else
+			array = airport.getDepartures();
+		
+		for(Flight f : array) {
+			if(f.getDate().getTime() > endDate.getTime())
+				return;
+			
+			if(f.getDate().getTime() >= startDate.getTime())
+				System.out.println(f);
+			
+		}
+	}
+
+	
+	private static void showFlightsOfCompany(Flight.FlightType type, Scanner in, Airport airport) {
+		System.out.println("\nPlease enter flight company: ");
+		String flightCompany = in.next();
+		
+		ArrayList<Flight> array;
+		if(type == Flight.FlightType.Arrival)
+			array = airport.getArrivals();
+		else
+			array = airport.getDepartures();
+		
+		
+		for(Flight f : array) { 
+			int result = f.getFlightCompany().compareTo(flightCompany);
+			if(result > 0)
+				return;
+			else
+				if(result == 0)
+					System.out.println(f);
+		}
+		
+	}
+	
+	
+	
+	private static void showFlightsByDayOfWeek(Flight.FlightType type, Scanner in, Airport airport) {
+
+		boolean[] daysSelected = new boolean[7];
+		int input;
+		do {
+			System.out.println("Please enter day (of week 1- sunday, 2- monday...)\nEnter 0 to finish");
+			input = in.nextInt();
+			if(input > 0 && input < 8)
+				daysSelected[input] = true;
+		}while(input!=0);
+		
+		
+		airport.sortFlightsByTime();
+		
+		ArrayList<Flight> array;
+		if(type == Flight.FlightType.Arrival)
+			array = airport.getArrivals();
+		else
+			array = airport.getDepartures();
+		
+		for(Flight f : array) {
+			if(daysSelected[f.getDate().getDay()-1])
+				System.out.println(f);
+		}
+	}
+				
+			
+	
 }
