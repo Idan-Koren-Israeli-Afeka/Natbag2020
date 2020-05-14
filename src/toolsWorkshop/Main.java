@@ -73,19 +73,19 @@ public class Main {
 				break;
 			case 9:
 				//show flights from start date to end date
-				showFlightsOfCompany(Flight.FlightType.Departure, in, airport);
+				System.out.println(showFlightsOfCompany(Flight.FlightType.Departure, in, airport)); //have to change this to all of methonds
 				break;
 			case 10:
 				//show flights from start date to end date
-				showFlightsOfCompany(Flight.FlightType.Arrival, in, airport);
+				System.out.println(showFlightsOfCompany(Flight.FlightType.Arrival, in, airport));
 				break;
 			case 11:
 				//show flights from start date to end date
-				showFlightsByDayOfWeek(Flight.FlightType.Departure, in, airport);
+				System.out.println(showFlightsByDayOfWeek(Flight.FlightType.Departure, in, airport));
 				break;
 			case 12:
 				//show flights from start date to end date
-				showFlightsByDayOfWeek(Flight.FlightType.Arrival, in, airport);
+				System.out.println(showFlightsByDayOfWeek(Flight.FlightType.Arrival, in, airport));
 				break;
 			default:
 				stopMenu = true;
@@ -230,10 +230,10 @@ public class Main {
 	}
 
 	
-	private static void showFlightsOfCompany(Flight.FlightType type, Scanner in, Airport airport) {
+	private static String showFlightsOfCompany(Flight.FlightType type, Scanner in, Airport airport) {
 		System.out.println("\nPlease enter flight company: ");
 		String flightCompany = in.next();
-		
+		String result = "";
 		ArrayList<Flight> array;
 		if(type == Flight.FlightType.Arrival)
 			array = airport.getArrivals();
@@ -242,28 +242,30 @@ public class Main {
 		
 		
 		for(Flight f : array) { 
-			int result = f.getFlightCompany().compareTo(flightCompany);
-			if(result > 0)
-				return;
+			int resultOfCompare = f.getFlightCompany().compareTo(flightCompany);
+			if(resultOfCompare > 0)
+				return "";
 			else
-				if(result == 0)
-					System.out.println(f);
+				if(resultOfCompare == 0)
+					result += f.toString();
 		}
-		
+		return result;		
 	}
 	
 	
 	
-	private static void showFlightsByDayOfWeek(Flight.FlightType type, Scanner in, Airport airport) {
+	private static String showFlightsByDayOfWeek(Flight.FlightType type, Scanner in, Airport airport) {
 
 		boolean[] daysSelected = new boolean[7];
 		int input;
+		String result = "";
 		do {
 			System.out.println("Please enter day (of week 1- sunday, 2- monday...)\nEnter 0 to finish");
 			input = in.nextInt();
 			if(input > 0 && input < 8)
 				daysSelected[input] = true;
 		}while(input!=0);
+		
 		
 		
 		airport.sortFlightsByTime();
@@ -276,8 +278,10 @@ public class Main {
 		
 		for(Flight f : array) {
 			if(daysSelected[f.getDate().getDay()-1])
-				System.out.println(f);
+				result += f.toString();
 		}
+		
+		return result;
 	}
 				
 			

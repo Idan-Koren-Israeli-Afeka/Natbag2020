@@ -12,8 +12,8 @@ import toolsWorkshop.Flight;
 class FlightsTest {
 
 	@Test
-	public void statementTest1() {
-		Airport airport = createFlight();
+	public void generalFlightPrintTest() {
+		Airport airport = createAirport();
 		StringBuffer expectedResult1 = new StringBuffer();
 		expectedResult1.append("Flight number 64a21 by Airlines, from New York to Tel Aviv, at 23/7/2020, on 18:45\n");
 		expectedResult1.append("Flight number 1243a by El Al, from Tel Aviv to London, at 22/7/2020, on 15:30\n");
@@ -28,9 +28,21 @@ class FlightsTest {
 
 		assertEquals(expectedResult2.toString(), airport.allFlightsToString());
 	}
+	
+	@Test
+	public void sortByCompanyTest() {
+		Airport airport = createAirport();
+		StringBuffer expectedResult1 = new StringBuffer();
+		expectedResult1.append("Flight number 1243a by El Al, from Tel Aviv to London, at 22/7/2020, on 15:30\n");
+		
+		
+
+	}
+	
+	
 
 	@SuppressWarnings("deprecation")
-	public Airport createFlight() {
+	public Airport createAirport() {
 		Airport airport = new Airport("Ben Gurion", "Tel Aviv");
 		Flight flight1 = new Flight("1243a", "El Al", "Tel Aviv", "London", new Date(2020, 7, 22, 15, 30), 3,
 				Flight.FlightType.Departure);

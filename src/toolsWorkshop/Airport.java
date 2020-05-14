@@ -82,7 +82,6 @@ public class Airport {
 		Collections.sort(departures, new SortByTime());
 		Collections.sort(arrivals, new SortByTime());
 		Collections.sort(allFlights, new SortByTime());
-
 	}
 	
 	public void sortFlightsByCompany() {
