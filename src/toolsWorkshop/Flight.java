@@ -23,6 +23,7 @@ public class Flight implements Serializable {
 	private String fromLocation; // can be airport
 	private String toLocation; // can be airport
 	private Date date;
+	public static String[] daysOfWeek = {"saturday", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday"};
 	private int terminal;
 	private FlightType flightType; // false = Departure, true = Arrival
 
@@ -102,8 +103,8 @@ public class Flight implements Serializable {
 	@Override
 	public String toString() {
 		return "Flight number " + flightID + " by " + flightCompany + ", from " + fromLocation + " to " + toLocation
-				+ ", at " + date.getDate() + "/" + date.getMonth() + "/" + date.getYear() + ", on " + date.getHours()
-				+ ":" + date.getMinutes();
+				+ ", on " + date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getYear() + ", at " + date.getHours()
+				+ ":" + date.getMinutes() + ", day of week: " + daysOfWeek[date.getDay()] + ", flight type: " + 
+				(flightType == FlightType.Arrival? "arrival" : "departure");
 	}
-
 }

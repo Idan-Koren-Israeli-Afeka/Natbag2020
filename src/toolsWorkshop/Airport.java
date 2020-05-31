@@ -12,7 +12,7 @@ public class Airport {
 	private ArrayList<Flight> arrivals;
 
 	private ArrayList<Flight> allFlights;
-
+	
 	public Airport(String name, String location) {
 		super();
 		this.name = name;
@@ -120,10 +120,30 @@ public class Airport {
 			return false;
 		if (newFlight.getFlightType() == Flight.FlightType.Arrival)
 			arrivals.add(newFlight);
-		else
+		else if(newFlight.getFlightType() == Flight.FlightType.Departure)
 			departures.add(newFlight);
 		allFlights.add(newFlight);
 		return true;
+	}
+	
+	public boolean removeFlightByFlightID(String flightID, boolean flightType) {
+		if(flightType) {
+			for (Flight flight : departures) {
+				if(flight.getFlightID().equals(flightID)) {
+					departures.remove(flight);
+					return allFlights.remove(flight);
+				}
+			}
+		}
+		else {
+			for (Flight flight : arrivals) {
+				if(flight.getFlightID().equals(flightID)) {
+					arrivals.remove(flight);
+					return allFlights.remove(flight);
+				}
+			}
+		}
+		return false;
 	}
 
 }
