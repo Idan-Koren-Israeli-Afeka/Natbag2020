@@ -30,7 +30,7 @@ public class Flight implements Serializable {
 	public Flight(String flightID, String flightCompany, String fromLocation, String toLocation, Date date,
 			int terminal, FlightType flightType) {
 		super();
-		this.flightID = flightID;
+		setFlightID(flightID);
 		this.flightCompany = flightCompany;
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
@@ -44,7 +44,7 @@ public class Flight implements Serializable {
 	}
 
 	public void setFlightID(String flightID) {
-		this.flightID = flightID;
+		this.flightID = flightID.toUpperCase();
 	}
 
 	public String getFlightCompany() {

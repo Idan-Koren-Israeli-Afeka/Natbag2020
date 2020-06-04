@@ -18,12 +18,18 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		final String MAIN_MENU_MESSAGE = "\nMain Menu: (choose an option)\n" + "1. Add a new flight\n" + "2. Remove a flight\n"
+				+ "3. Save flights to file\n" + "4. Load flights from file\n" + "5. Display flights menu\n";
+		
+		final String FILTER_MENU_MESSAGE = "\nDisplay Menu: (choose an option)\n" + "1. Departures / Arrivals\n"
+				+ "2. Company\n" + "3. City\n" + "4. from date\n" + "5. to date\n" + "6. days of week\n"
+				+ "7. reset\n";
+		
 		Scanner in = new Scanner(System.in);
 		Airport airport = new Airport("Ben Gurion Airport", "Tel Aviv");
-		boolean stopMenu = false;
+		boolean stopMenu = false; 
 		do {
-			System.out.println("\nMain Menu: (choose an option)\n" + "1. Add a new flight\n" + "2. Remove a flight\n"
-					+ "3. Save flights to file\n" + "4. Load flights from file\n" + "5. Display flights menu\n");
+			System.out.println(MAIN_MENU_MESSAGE);
 
 			int option = in.nextInt();
 			switch (option) {
@@ -50,9 +56,7 @@ public class Main {
 				flightsToDisplay = airport.getAllFlights();
 				ArrayList<Flight> temp = new ArrayList<Flight>();
 				do {
-					System.out.println("\nDisplay Menu: (choose an option)\n" + "1. Departures / Arrivals\n"
-							+ "2. Company\n" + "3. City\n" + "4. from date\n" + "5. to date\n" + "6. days of week\n"
-							+ "7. reset\n");
+					System.out.println(FILTER_MENU_MESSAGE);
 
 					int displayOption = in.nextInt();
 					switch (displayOption) {
