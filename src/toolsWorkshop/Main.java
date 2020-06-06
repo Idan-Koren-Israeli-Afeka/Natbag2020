@@ -125,7 +125,7 @@ public class Main {
 		flightsToDisplay.sort(new SortByTime());
 		temp.removeAll(temp);
 		for (Flight flight : flightsToDisplay) {
-			if (daysSelected[flight.getDate().getDay()])
+			if (daysSelected[flight.getDate().getDay()] && !flightsToDisplay.contains(flight))
 				temp.add(flight);
 		}
 		flightsToDisplay.removeAll(flightsToDisplay);
@@ -152,7 +152,7 @@ public class Main {
 		flightsToDisplay.sort(new SortByTime());
 		temp.removeAll(temp);
 		for (Flight flight : flightsToDisplay) {
-			if (flight.getDate().getTime() < endDate.getTime())
+			if (flight.getDate().getTime() < endDate.getTime() && !flightsToDisplay.contains(flight))
 				temp.add(flight);
 		}
 		flightsToDisplay.removeAll(flightsToDisplay);
@@ -179,7 +179,7 @@ public class Main {
 		flightsToDisplay.sort(new SortByTime());
 		temp.removeAll(temp);
 		for (Flight flight : flightsToDisplay) {
-			if (flight.getDate().getTime() >= startDate.getTime())
+			if (flight.getDate().getTime() >= startDate.getTime() && !flightsToDisplay.contains(flight))
 				temp.add(flight);
 		}
 		flightsToDisplay.removeAll(flightsToDisplay);
@@ -194,7 +194,7 @@ public class Main {
 		String city = in.next();
 		flightsToDisplay.sort(new SortByCity());
 		for (Flight flight : flightsToDisplay) {
-			if (!flight.getToLocation().equals(city))
+			if (!flight.getToLocation().equals(city) && !flightsToDisplay.contains(flight))
 				temp.add(flight);
 		}
 		flightsToDisplay.removeAll(temp);
@@ -208,7 +208,7 @@ public class Main {
 		String airline = in.next();
 		flightsToDisplay.sort(new SortByCompany());
 		for (Flight flight : flightsToDisplay) {
-			if (!flight.getFlightCompany().equals(airline))
+			if (!flight.getFlightCompany().equals(airline) && !flightsToDisplay.contains(flight))
 				temp.add(flight);
 		}
 		flightsToDisplay.removeAll(temp);
@@ -219,16 +219,24 @@ public class Main {
 	private static ArrayList<Flight> departuresOrArrivals(Scanner in, Airport airport,
 			ArrayList<Flight> flightsToDisplay) {
 		System.out.println(
-				"Which type of flight would you like to display?\n" + "press d for departures or a for arrivals");
-		char answer = in.next().charAt(0);
-		if (answer == 'd' || answer == 'D')
-			return airport.getDepartures();
-		else if (answer == 'a' || answer == 'A')
-			return airport.getArrivals();
-		else {
-			System.out.println("wrong input");
-			return airport.getAllFlights();
+				"Which type of flight would you like to display?\n" + "press d for departures or a for arrivals.");
+		char answer;
+		do {
+		answer = in.next().charAt(0);
+		switch(answer) {
+		case 'a':
+			airport.getArrivals();
+			break;
+		case 'd':
+			airport.getDepartures();
+			break;
+		default:
+			System.out.println("Couldn't detect input.\n" + "press d for departures or a for arrivals.");
+			break;
 		}
+		}while(answer!= 'd' && answer!= 'a');
+		
+		return airport.getArrivals(); //Unreachable statement
 	}
 
 	private static void removeFlight(Scanner in, Airport airport) {
