@@ -15,16 +15,16 @@ import java.util.Scanner;
 import toolsWorkshop.Flight.FlightType;
 
 public class Main {
-
+	
+	final static String MAIN_MENU_MESSAGE = "\nMain Menu: (choose an option)\n" + "1. Add a new flight\n" + "2. Remove a flight\n"
+			+ "3. Save flights to file\n" + "4. Load flights from file\n" + "5. Display flights menu\n";
+	
+	final static String FILTER_MENU_MESSAGE = "\nDisplay Menu: (choose an option)\n" + "1. Departures / Arrivals\n"
+			+ "2. Company\n" + "3. City\n" + "4. from date\n" + "5. to date\n" + "6. days of week\n"
+			+ "7. reset\n";
+	
+	
 	public static void main(String[] args) {
-
-		final String MAIN_MENU_MESSAGE = "\nMain Menu: (choose an option)\n" + "1. Add a new flight\n" + "2. Remove a flight\n"
-				+ "3. Save flights to file\n" + "4. Load flights from file\n" + "5. Display flights menu\n";
-		
-		final String FILTER_MENU_MESSAGE = "\nDisplay Menu: (choose an option)\n" + "1. Departures / Arrivals\n"
-				+ "2. Company\n" + "3. City\n" + "4. from date\n" + "5. to date\n" + "6. days of week\n"
-				+ "7. reset\n";
-		
 		Scanner in = new Scanner(System.in);
 		Airport airport = new Airport("Ben Gurion Airport", "Tel Aviv");
 		boolean stopMenu = false; 
@@ -51,6 +51,12 @@ public class Main {
 				break;
 
 			case 5: // display menu
+				FlightFilter ff = FlightFilter.getInstance(airport);
+				ff.applyArrivelsOnly();
+				ArrayList<Flight> toDisplay = ff.filter();
+				for(Flight f : toDisplay)
+					System.out.println(f);
+				/*
 				boolean stopDisplayMenu = false;
 				ArrayList<Flight> flightsToDisplay = new ArrayList<Flight>();
 				flightsToDisplay = airport.getAllFlights();
@@ -101,7 +107,7 @@ public class Main {
 
 				} while (!stopDisplayMenu);
 				break;
-
+				 */
 			default:
 				stopMenu = true;
 				break;
@@ -137,10 +143,10 @@ public class Main {
 	private static ArrayList<Flight> displayToDate(Scanner in, Airport airport, ArrayList<Flight> flightsToDisplay,
 			ArrayList<Flight> temp) {
 		System.out.println("enter ending date:");
-		System.out.println("Please enter year");
+		System.out.println("Please enter year:");
 		int year = in.nextInt();
 
-		System.out.println("Please enter month");
+		System.out.println("Please enter month:");
 		int month = in.nextInt() - 1;
 
 		System.out.println("Please enter day (in month)");
@@ -282,7 +288,7 @@ public class Main {
 		System.out.println("\nPlease enter flight company: ");
 		String flightCompany = in.nextLine();
 
-		System.out.println("Please enter destination: ");
+		System.out.println("Please enter location: ");
 		String location = in.nextLine();
 
 		System.out.println("Please enter flight ID: ");
@@ -291,13 +297,13 @@ public class Main {
 		System.out.println("Please enter terminal: ");
 		int terminal = in.nextInt();
 
-		System.out.println("Please enter year");
+		System.out.println("Please enter year:");
 		int year = in.nextInt();
 
-		System.out.println("Please enter month");
+		System.out.println("Please enter month:");
 		int month = in.nextInt() - 1; // Starting from zero
 
-		System.out.println("Please enter day (in month)");
+		System.out.println("Please enter day (in month):");
 		int day = in.nextInt();
 
 		System.out.println("Please enter time (hours and minutes) in format xx:xx");
@@ -316,9 +322,9 @@ public class Main {
 					flightType);
 		}
 		if (airport.addFlight(newFlight))
-			System.out.println("flight added succesfully");
+			System.out.println("Flight added succesfully");
 		else
-			System.out.println("flight wasnt added");
+			System.out.println("Flight wasnt added");
 	}
 
 	private static void saveFlights(Airport airport) {
@@ -332,7 +338,7 @@ public class Main {
 			for (Flight flight : airport.getArrivals()) {
 				objOut.writeObject(flight);
 			}
-			System.out.println("\nflights saved succesfully!");
+			System.out.println("\nFlights saved succesfully!");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

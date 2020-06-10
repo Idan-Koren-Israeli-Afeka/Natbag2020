@@ -7,28 +7,6 @@ import java.util.Date;
 import toolsWorkshop.Flight.FlightType;
 
 public class FlightFilter {
-
-	//Each filter will be mapped to an int id
-	public enum Filter{
-		Departures(0),
-		Arrivals(1),
-		Company(2),
-		City(3),
-		fromDate(4),
-		toDate(5),
-		daysOfWeek(6);
-		
-		private final int id;
-		
-		private Filter(int id) {
-			this.id= id;
-		}
-		
-		public int getId() {
-			return id;
-		}
-	};
-	
 	
 	private static FlightFilter single_instance = null;
 
@@ -37,7 +15,7 @@ public class FlightFilter {
 	private boolean departuresOnly;
 	private boolean arrivalsOnly;
 	private String filteredCompany;
-	private String filteredCity;
+	private String filteredLocation;
 	private Date filteredFromDate;
 	private Date filteredToDate;
 	private boolean[] filteredDaysOfWeek = new boolean[7];
@@ -47,7 +25,7 @@ public class FlightFilter {
 		removeAllFilters();
 	}
 	
-	public FlightFilter getInstance(Airport airport) {
+	public static FlightFilter getInstance(Airport airport) {
 		if(single_instance == null)
 			single_instance = new FlightFilter(airport);
 		return single_instance;
@@ -56,9 +34,10 @@ public class FlightFilter {
 	
 	//This function will use current applied filters to remove flights from the result
 	public ArrayList<Flight> filter(){
-		ArrayList<Flight> flightsLeft = airport.getAllFlights();
-		
-		for(Flight flight : flightsLeft) {
+		ArrayList<Flight> flightsLeft = new ArrayList<>(airport.getAllFlights());
+	
+		ArrayList<Flight> allFlights = new ArrayList<>(airport.getAllFlights());
+		for(Flight flight : allFlights) {
 			if(departuresOnly)
 				if(flight.getFlightType()!=FlightType.Departure) {
 					flightsLeft.remove(flight);
@@ -69,81 +48,79 @@ public class FlightFilter {
 					flightsLeft.remove(flight);
 					continue;
 				}
-			if(!flight.getFlightCompany().equals(filteredCompany)) {
+			if(!filteredCompany.equals("") && !flight.getFlightCompany().equals(filteredCompany)) {
 				flightsLeft.remove(flight);
 				continue;
 			}
-			if(!flight.getToLocation().equals(filteredCity)) {
+			if(!filteredLocation.equals("") && !flight.getToLocation().equals(filteredLocation)) {
 				flightsLeft.remove(flight);
 				continue;
 			}
-			if(!flight.getDate().before(filteredFromDate)) {
+			if(flight.getDate().before(filteredFromDate)) {
+				System.out.println("hello");
 				flightsLeft.remove(flight);
 				continue;
 			}
-			if(!flight.getDate().after(filteredToDate)) {
+			if(flight.getDate().after(filteredToDate)) {
+				System.out.println("bye");
 				flightsLeft.remove(flight);
 				continue;
 			}
 			for(int day=0;day < 7; day++) {
-				if(filteredDaysOfWeek[day]== false && flight.getDate().getDay() == day)
+				if(filteredDaysOfWeek[day] == false && flight.getDate().getDay() == day)
 					flightsLeft.remove(flight);
 			}
 		}
 		
 		return flightsLeft;
 	}
-	
-	
-	public void applyFilter(Filter filter) {
-	
-		//Need to check that user doesnt do "DEPRATURES ONLY" AND "ARRIVLS ONLY" at the same time
+
 		
-		switch(filter) {
-		case Departures:
-			
-			break;
-		case Arrivals:
-			
-			break;
-		case Company:
-			
-			break;
-		case City:
-			
-			break;
-			//.....
-		
-		}
-		
+	//Region - apply function for every filter
+	public void applyDeparturesOnly(){
+		arrivalsOnly = false;
+		departuresOnly = true;
 	}
 	
-	public void removeFilter(Filter filter) {
-		switch(filter) {
-		case Departures:
-			
-			break;
-		case Arrivals:
-			
-			break;
-		case Company:
-			
-			break;
-		case City:
-			
-			break;
-			//.....
-		
-		}
+	public void applyArrivelsOnly(){
+		arrivalsOnly = true;
+		departuresOnly = false;
 	}
+	
+	public void applyCompany(String company){
+		filteredCompany = company;
+	}
+	
+	public void applyLocation(String location){
+		filteredLocation = location;
+	}
+	
+	public void applyFromDate(Date from) {
+		filteredFromDate = from;
+	}
+	
+	public void applyToDate(Date to) {
+		filteredToDate = to;
+	}
+	
+	//Input: list of days to be filtered, as numbers from 0-6
+	public void applySingleDayOfWeek(int... days) {
+		Arrays.fill(filteredDaysOfWeek, false);
+		for(int day : days)
+			filteredDaysOfWeek[day] = true; //Filter only selected days 
+	}
+	
+	
+	//Region - remove function for everyfilter
 	
 	public void removeAllFilters() {
 		departuresOnly = false;
 		arrivalsOnly = false;
 		filteredCompany = "";
-		filteredCity = "";
-		filteredFromDate = new Date(0); //Minimum date
+		filteredLocation = "";
+		filteredFromDate = new Date(Long.MIN_VALUE); //Minimum date
 		filteredToDate = new Date(Long.MAX_VALUE); //Maximum date
 		Arrays.fill(filteredDaysOfWeek, true);
 	}
+	
 }
