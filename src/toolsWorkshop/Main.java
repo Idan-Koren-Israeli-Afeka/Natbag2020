@@ -19,9 +19,9 @@ public class Main {
 	final static String MAIN_MENU_MESSAGE = "\nMain Menu: (choose an option)\n" + "1. Add a new flight\n" + "2. Remove a flight\n"
 			+ "3. Save flights to file\n" + "4. Load flights from file\n" + "5. Display flights menu\n";
 	
-	final static String FILTER_MENU_MESSAGE = "\nDisplay Menu: (choose an option)\n" + "1. Departures / Arrivals\n"
-			+ "2. Company\n" + "3. City\n" + "4. from date\n" + "5. to date\n" + "6. days of week\n"
-			+ "7. reset\n";
+	final static String FILTER_MENU_MESSAGE = "\nDisplay Menu: (choose an option)\n" + "1. Departures Only\n"
+			+ "2. Arrivals Only\n"+"3. Company\n" + "4. City\n" + "5. From Date\n" + "6. To Date\n" + "7. Days of Week\n"
+			+ "8. Reset All Filters\n";
 	
 	
 	public static void main(String[] args) {
@@ -51,63 +51,8 @@ public class Main {
 				break;
 
 			case 5: // display menu
-				FlightFilter ff = FlightFilter.getInstance(airport);
-				ff.applyArrivelsOnly();
-				ArrayList<Flight> toDisplay = ff.filter();
-				for(Flight f : toDisplay)
-					System.out.println(f);
-				/*
-				boolean stopDisplayMenu = false;
-				ArrayList<Flight> flightsToDisplay = new ArrayList<Flight>();
-				flightsToDisplay = airport.getAllFlights();
-				ArrayList<Flight> temp = new ArrayList<Flight>();
-				do {
-					System.out.println(FILTER_MENU_MESSAGE);
-
-					int displayOption = in.nextInt();
-					switch (displayOption) {
-					case 1: // departures / arrivals
-						flightsToDisplay = departuresOrArrivals(in, airport, flightsToDisplay);
-						break;
-
-					case 2: // company
-						flightsToDisplay = displayByCompany(in, airport, flightsToDisplay, temp);
-						break;
-
-					case 3: // city
-						flightsToDisplay = displayByCity(in, airport, flightsToDisplay, temp);
-						break;
-
-					case 4: // from date
-						flightsToDisplay = displayFromDate(in, airport, flightsToDisplay, temp);
-						break;
-
-					case 5: // to date
-						flightsToDisplay = displayToDate(in, airport, flightsToDisplay, temp);
-						break;
-
-					case 6: // days of week
-						flightsToDisplay = displayDaysOfWeek(in, airport, flightsToDisplay, temp);
-						break;
-
-					case 7: // reset
-						flightsToDisplay.removeAll(flightsToDisplay);
-						flightsToDisplay.addAll(airport.getAllFlights());
-						break;
-
-					default:
-						stopDisplayMenu = true;
-						break;
-					}
-
-					flightsToDisplay.sort(new SortByTime());
-					for (Flight flight : flightsToDisplay) {
-						System.out.println(flight);
-					}
-
-				} while (!stopDisplayMenu);
+				showDisplayMenu(in ,airport);
 				break;
-				 */
 			default:
 				stopMenu = true;
 				break;
@@ -117,132 +62,65 @@ public class Main {
 
 	}
 
-	@SuppressWarnings("deprecation")
-	private static ArrayList<Flight> displayDaysOfWeek(Scanner in, Airport airport, ArrayList<Flight> flightsToDisplay,
-			ArrayList<Flight> temp) {
-		boolean[] daysSelected = new boolean[7];
-		int input;
-		do {
-			System.out.println("Please enter day (of week: 0- saturday, 1- sunday, 2- monday...)\nEnter -1 to finish");
-			input = in.nextInt();
-			if (input >= 0 && input < 7)
-				daysSelected[input] = true;
-		} while (input != -1);
-		flightsToDisplay.sort(new SortByTime());
-		temp.removeAll(temp);
-		for (Flight flight : flightsToDisplay) {
-			if (daysSelected[flight.getDate().getDay()] && !flightsToDisplay.contains(flight))
-				temp.add(flight);
-		}
-		flightsToDisplay.removeAll(flightsToDisplay);
-		flightsToDisplay.addAll(temp);
-		temp.removeAll(temp);
-		return flightsToDisplay;
-	}
 
-	private static ArrayList<Flight> displayToDate(Scanner in, Airport airport, ArrayList<Flight> flightsToDisplay,
-			ArrayList<Flight> temp) {
-		System.out.println("enter ending date:");
-		System.out.println("Please enter year:");
-		int year = in.nextInt();
-
-		System.out.println("Please enter month:");
-		int month = in.nextInt() - 1;
-
-		System.out.println("Please enter day (in month)");
-		int day = in.nextInt();
-
-		@SuppressWarnings("deprecation")
-		Date endDate = new Date(year, month, day, 23, 59, 59);
-
-		flightsToDisplay.sort(new SortByTime());
-		temp.removeAll(temp);
-		for (Flight flight : flightsToDisplay) {
-			if (flight.getDate().getTime() < endDate.getTime() && !flightsToDisplay.contains(flight))
-				temp.add(flight);
-		}
-		flightsToDisplay.removeAll(flightsToDisplay);
-		flightsToDisplay.addAll(temp);
-		temp.removeAll(temp);
-		return flightsToDisplay;
-	}
-
-	private static ArrayList<Flight> displayFromDate(Scanner in, Airport airport, ArrayList<Flight> flightsToDisplay,
-			ArrayList<Flight> temp) {
-		System.out.println("enter starting date:");
-		System.out.println("Please enter year");
-		int year = in.nextInt();
-
-		System.out.println("Please enter month");
-		int month = in.nextInt() - 1;
-
-		System.out.println("Please enter day (in month)");
-		int day = in.nextInt();
-
-		@SuppressWarnings("deprecation")
-		Date startDate = new Date(year, month, day, 00, 00);
-
-		flightsToDisplay.sort(new SortByTime());
-		temp.removeAll(temp);
-		for (Flight flight : flightsToDisplay) {
-			if (flight.getDate().getTime() >= startDate.getTime() && !flightsToDisplay.contains(flight))
-				temp.add(flight);
-		}
-		flightsToDisplay.removeAll(flightsToDisplay);
-		flightsToDisplay.addAll(temp);
-		temp.removeAll(temp);
-		return flightsToDisplay;
-	}
-
-	private static ArrayList<Flight> displayByCity(Scanner in, Airport airport, ArrayList<Flight> flightsToDisplay,
-			ArrayList<Flight> temp) {
-		System.out.println("Enter city to display:");
-		String city = in.next();
-		flightsToDisplay.sort(new SortByCity());
-		for (Flight flight : flightsToDisplay) {
-			if (!flight.getToLocation().equals(city) && !flightsToDisplay.contains(flight))
-				temp.add(flight);
-		}
-		flightsToDisplay.removeAll(temp);
-		temp.removeAll(temp);
-		return flightsToDisplay;
-	}
-
-	private static ArrayList<Flight> displayByCompany(Scanner in, Airport airport, ArrayList<Flight> flightsToDisplay,
-			ArrayList<Flight> temp) {
-		System.out.println("Enter airline to display:");
-		String airline = in.next();
-		flightsToDisplay.sort(new SortByCompany());
-		for (Flight flight : flightsToDisplay) {
-			if (!flight.getFlightCompany().equals(airline) && !flightsToDisplay.contains(flight))
-				temp.add(flight);
-		}
-		flightsToDisplay.removeAll(temp);
-		temp.removeAll(temp);
-		return flightsToDisplay;
-	}
-
-	private static ArrayList<Flight> departuresOrArrivals(Scanner in, Airport airport,
-			ArrayList<Flight> flightsToDisplay) {
-		System.out.println(
-				"Which type of flight would you like to display?\n" + "press d for departures or a for arrivals.");
-		char answer;
-		do {
-		answer = in.next().charAt(0);
-		switch(answer) {
-		case 'a':
-			airport.getArrivals();
-			break;
-		case 'd':
-			airport.getDepartures();
-			break;
-		default:
-			System.out.println("Couldn't detect input.\n" + "press d for departures or a for arrivals.");
-			break;
-		}
-		}while(answer!= 'd' && answer!= 'a');
+	
+	public static void showDisplayMenu(Scanner in, Airport airport){
+		boolean stopDisplayMenu = false;
+		ArrayList<Flight> flightsToDisplay;
+		FlightFilter menu = FlightFilter.getInstance(airport);
 		
-		return airport.getArrivals(); //Unreachable statement
+		do {
+			System.out.println(FILTER_MENU_MESSAGE);
+
+			int displayOption = in.nextInt();
+			switch (displayOption) {
+			case 1: // departures
+				menu.applyDeparturesOnly();
+				break;
+			case 2: // arrivals
+				menu.applyArrivelsOnly();
+				break;
+			case 3: // company
+				System.out.println("Please enter location to filter:");
+				String companyToFilter = in.next();
+				menu.applyCompany(companyToFilter);
+				break;
+			case 4: // location
+				System.out.println("Please enter location to filter:");
+				String locationToFilter = in.next();
+				menu.applyLocation(locationToFilter);
+				break;
+
+			case 5: // from date
+				Date fromDate = getDateFromUser(in);
+				menu.applyFromDate(fromDate);
+				break;
+
+			case 6: // to date
+				Date toDate = getDateFromUser(in);
+				menu.applyToDate(toDate);
+				break;
+
+			case 7: // days of week
+				//flightsToDisplay = displayDaysOfWeek(in, airport, flightsToDisplay, temp);
+				break;
+
+			case 8: // reset
+				menu.removeAllFilters();
+				break;
+
+			default:
+				stopDisplayMenu = true;
+				break;
+			}
+
+			flightsToDisplay = menu.filter();
+			flightsToDisplay.sort(new SortByTime());
+			for (Flight flight : flightsToDisplay) {
+				System.out.println(flight);
+			}
+
+		} while (!stopDisplayMenu);
 	}
 
 	private static void removeFlight(Scanner in, Airport airport) {
@@ -297,22 +175,7 @@ public class Main {
 		System.out.println("Please enter terminal: ");
 		int terminal = in.nextInt();
 
-		System.out.println("Please enter year:");
-		int year = in.nextInt();
-
-		System.out.println("Please enter month:");
-		int month = in.nextInt() - 1; // Starting from zero
-
-		System.out.println("Please enter day (in month):");
-		int day = in.nextInt();
-
-		System.out.println("Please enter time (hours and minutes) in format xx:xx");
-		String[] timeInDay = in.next().split(":");
-		int hours = Integer.parseInt(timeInDay[0]);
-		int minutes = Integer.parseInt(timeInDay[1]);
-
-		@SuppressWarnings("deprecation")
-		Date date = new Date(year, month, day, hours, minutes);
+		Date date = getDateFromUser(in);
 		Flight newFlight = null;
 		if (flightType == FlightType.Arrival) {
 			newFlight = new Flight(flightID, flightCompany, location, airport.getLocation(), date, terminal,
@@ -367,5 +230,25 @@ public class Main {
 		} catch (ClassNotFoundException e) {
 			System.out.println("Load exception: File \"flights.obj\" does not contain flights data!");
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static Date getDateFromUser(Scanner in)
+	{
+		System.out.println("Please enter year:");
+		int year = in.nextInt();
+
+		System.out.println("Please enter month:");
+		int month = in.nextInt() - 1; // Starting from zero
+
+		System.out.println("Please enter day (in month):");
+		int day = in.nextInt();
+
+		System.out.println("Please enter time (hours and minutes) in format xx:xx");
+		String[] timeInDay = in.next().split(":");
+		int hours = Integer.parseInt(timeInDay[0]);
+		int minutes = Integer.parseInt(timeInDay[1]);
+
+		return new Date(year, month, day, hours, minutes);
 	}
 }
