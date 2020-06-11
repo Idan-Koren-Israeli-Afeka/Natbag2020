@@ -20,14 +20,14 @@ public class Flight implements Serializable {
 
 	private String flightID; // for example: LY001
 	private String flightCompany; // for example: ELAL
-	private String fromLocation; // can be airport
-	private String toLocation; // can be airport
+	private Airport fromLocation; // can be airport
+	private Airport toLocation; // can be airport
 	private Date date;
 	public static String[] daysOfWeek = {"saturday", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday"};
 	private int terminal;
 	private FlightType flightType; // false = Departure, true = Arrival
 
-	public Flight(String flightID, String flightCompany, String fromLocation, String toLocation, Date date,
+	public Flight(String flightID, String flightCompany, Airport fromLocation, Airport toLocation, Date date,
 			int terminal, FlightType flightType) {
 		super();
 		setFlightID(flightID);
@@ -55,15 +55,15 @@ public class Flight implements Serializable {
 		this.flightCompany = flightCompany;
 	}
 
-	public String getFromLocation() {
+	public Airport getFromLocation() {
 		return fromLocation;
 	}
 
-	public void setFromLocation(String fromLocation) {
+	public void setFromLocation(Airport fromLocation) {
 		this.fromLocation = fromLocation;
 	}
 
-	public String getToLocation() {
+	public Airport getToLocation() {
 		return toLocation;
 	}
 
@@ -71,7 +71,7 @@ public class Flight implements Serializable {
 		return flightType;
 	}
 
-	public void setToLocation(String toLocation) {
+	public void setToLocation(Airport toLocation) {
 		this.toLocation = toLocation;
 	}
 

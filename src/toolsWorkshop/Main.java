@@ -20,13 +20,59 @@ public class Main {
 			+ "3. Save flights to file\n" + "4. Load flights from file\n" + "5. Display flights menu\n";
 	
 	final static String FILTER_MENU_MESSAGE = "\nDisplay Menu: (choose an option)\n" + "1. Departures Only\n"
-			+ "2. Arrivals Only\n"+"3. Company\n" + "4. City\n" + "5. From Date\n" + "6. To Date\n" + "7. Days of Week\n"
-			+ "8. Reset All Filters\n";
+			+ "2. Arrivals Only\n"+"3. Company\n" + "4. Location\n" + "5. From Date\n" + "6. To Date\n" + "7. Days of Week\n"
+			+ "8. Reset All Filters\n" + "Press any other key to go back";
+	
+	final static String FILE_NAME = "flights.obj";
 	
 	
 	public static void main(String[] args) {
+		Airport airport = new Airport("TLV", "Israeli", "Tel Aviv");
+		
+		loadFlights(airport);
+		
+		
+		FlightFilter displayFlightsMenu = FlightFilter.getInstance(airport);
+		boolean isHtml = args.length > 0 && args[0].equalsIgnoreCase("html");
+
+		switch(args[1].toLowerCase()) {
+		case "departures":
+			displayFlightsMenu.applyDeparturesOnly();
+			break;
+		case "arrivals":
+			displayFlightsMenu.applyArrivelsOnly();
+			break;
+		}
+		
+		displayFlightsMenu.applyCountry(args[2].toLowerCase());
+		displayFlightsMenu.applyCity(args[3].toLowerCase());
+		displayFlightsMenu.applyAirportName(args[4].toLowerCase());
+		displayFlightsMenu.applyCompany(args[5].toLowerCase());
+		
+		Date fromDate = new Date(Integer.parseInt(args[8]),Integer.parseInt(args[7])-1,Integer.parseInt(args[6]),0,0);
+		Date toDate = new Date(Integer.parseInt(args[11]),Integer.parseInt(args[10])-1,Integer.parseInt(args[9]),23,59);
+		displayFlightsMenu.applyFromDate(fromDate);
+		displayFlightsMenu.applyToDate(toDate);
+		
+		boolean[] daysOfWeek = new boolean[7];
+		for(int i = 12; i<19; i++) {
+			if(args[i].equalsIgnoreCase("false"))
+				daysOfWeek[i-12] = false;
+			else
+				daysOfWeek[i-12] = true;
+		}
+		
+		
+		
+		for(String s : args)
+			System.out.println(s);
+		
+		for(Flight f : displayFlightsMenu.filter())
+			System.out.println(f);
+		
+		/*
 		Scanner in = new Scanner(System.in);
-		Airport airport = new Airport("Ben Gurion Airport", "Tel Aviv");
+		
 		boolean stopMenu = false; 
 		do {
 			System.out.println(MAIN_MENU_MESSAGE);
@@ -59,7 +105,7 @@ public class Main {
 			}
 
 		} while (!stopMenu);
-
+*/
 	}
 
 
@@ -70,25 +116,34 @@ public class Main {
 		FlightFilter menu = FlightFilter.getInstance(airport);
 		
 		do {
+			flightsToDisplay = menu.filter();
+			flightsToDisplay.sort(new SortByTime());
+			for (Flight flight : flightsToDisplay) {
+				System.out.println(flight);
+			}
+			
 			System.out.println(FILTER_MENU_MESSAGE);
-
+			
 			int displayOption = in.nextInt();
 			switch (displayOption) {
 			case 1: // departures
 				menu.applyDeparturesOnly();
 				break;
+				
 			case 2: // arrivals
 				menu.applyArrivelsOnly();
 				break;
+				
 			case 3: // company
 				System.out.println("Please enter location to filter:");
 				String companyToFilter = in.next();
 				menu.applyCompany(companyToFilter);
 				break;
+				
 			case 4: // location
 				System.out.println("Please enter location to filter:");
 				String locationToFilter = in.next();
-				menu.applyLocation(locationToFilter);
+				//menu.applyLocation(locationToFilter);
 				break;
 
 			case 5: // from date
@@ -112,12 +167,6 @@ public class Main {
 			default:
 				stopDisplayMenu = true;
 				break;
-			}
-
-			flightsToDisplay = menu.filter();
-			flightsToDisplay.sort(new SortByTime());
-			for (Flight flight : flightsToDisplay) {
-				System.out.println(flight);
 			}
 
 		} while (!stopDisplayMenu);
@@ -145,7 +194,7 @@ public class Main {
 		if (airport.removeFlightByFlightID(flightID, flightType))
 			System.out.println("Flight " + flightID + " removed successfully");
 		else {
-			System.out.println("nothing happened");
+			System.out.println("Flight not found, nothing happened");
 		}
 	}
 
@@ -166,8 +215,16 @@ public class Main {
 		System.out.println("\nPlease enter flight company: ");
 		String flightCompany = in.nextLine();
 
-		System.out.println("Please enter location: ");
-		String location = in.nextLine();
+		System.out.println("Please enter airport name: ");
+		String airportName = in.nextLine();
+		
+		System.out.println("Please enter airport country: ");
+		String airportCountry = in.nextLine();
+		
+		System.out.println("Please enter airport city: ");
+		String airportCity = in.nextLine();
+		
+		Airport flightAirport = new Airport(airportName, airportCountry, airportCity);
 
 		System.out.println("Please enter flight ID: ");
 		String flightID = in.nextLine();
@@ -178,10 +235,10 @@ public class Main {
 		Date date = getDateFromUser(in);
 		Flight newFlight = null;
 		if (flightType == FlightType.Arrival) {
-			newFlight = new Flight(flightID, flightCompany, location, airport.getLocation(), date, terminal,
+			newFlight = new Flight(flightID, flightCompany, flightAirport , airport, date, terminal,
 					flightType);
 		} else {
-			newFlight = new Flight(flightID, flightCompany, airport.getLocation(), location, date, terminal,
+			newFlight = new Flight(flightID, flightCompany, airport, flightAirport , date, terminal,
 					flightType);
 		}
 		if (airport.addFlight(newFlight))
@@ -211,7 +268,7 @@ public class Main {
 
 	public static void loadFlights(Airport airport) {
 		try (ObjectInputStream objIn = new ObjectInputStream(
-				new BufferedInputStream(new FileInputStream("flights.obj")))) {
+				new BufferedInputStream(new FileInputStream(FILE_NAME)))) {
 			int depSize = objIn.readInt();
 			for (int i = 0; i < depSize; i++) {
 				Flight flight = (Flight) objIn.readObject();

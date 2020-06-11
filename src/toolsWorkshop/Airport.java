@@ -1,31 +1,35 @@
 package toolsWorkshop;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Airport {
+public class Airport implements Serializable{
 
 	private String name;
-	private String location;
+	private String country;
+	private String city;
 
 	private ArrayList<Flight> departures;
 	private ArrayList<Flight> arrivals;
 
 	private ArrayList<Flight> allFlights;
 	
-	public Airport(String name, String location) {
+	public Airport(String name, String country, String city) {
 		super();
 		this.name = name;
-		this.location = location;
+		this.city = city;
+		this.country = country;
 		departures = new ArrayList<Flight>();
 		arrivals = new ArrayList<Flight>();
 		allFlights = new ArrayList<Flight>();
 	}
 
-	public Airport(String name, String location, ArrayList<Flight> departures, ArrayList<Flight> arrivals) {
+	public Airport(String name, String country, String city, ArrayList<Flight> departures, ArrayList<Flight> arrivals) {
 		super();
 		this.name = name;
-		this.location = location;
+		this.city = city;
+		this.country = country;
 		this.departures = departures;
 		this.arrivals = arrivals;
 		allFlights = new ArrayList<Flight>();
@@ -39,14 +43,6 @@ public class Airport {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public ArrayList<Flight> getDepartures() {
@@ -73,9 +69,25 @@ public class Airport {
 		this.allFlights = allFlights;
 	}
 
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
 	@Override
 	public String toString() {
-		return "Airport [name=" + name + ", location=" + location + "]";
+		return "Airport [name=" + name + " country=" + country +", city=" + city + "]";
 	}
 
 	public void sortFlightsByTime() {

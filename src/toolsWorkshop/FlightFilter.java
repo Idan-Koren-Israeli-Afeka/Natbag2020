@@ -15,7 +15,9 @@ public class FlightFilter {
 	private boolean departuresOnly;
 	private boolean arrivalsOnly;
 	private String filteredCompany;
-	private String filteredLocation;
+	private String filteredCountry;
+	private String filteredCity;
+	private String filteredAirportName;
 	private Date filteredFromDate;
 	private Date filteredToDate;
 	private boolean[] filteredDaysOfWeek = new boolean[7];
@@ -48,16 +50,29 @@ public class FlightFilter {
 					flightsLeft.remove(flight);
 					continue;
 				}
-			if(!filteredCompany.equals("") && !flight.getFlightCompany().equals(filteredCompany)) {
+			if(!filteredCompany.equalsIgnoreCase("") && !flight.getFlightCompany().equalsIgnoreCase(filteredCompany)) {
 				flightsLeft.remove(flight);
 				continue;
 			}
-			if(!filteredLocation.equals("") && !flight.getToLocation().equals(filteredLocation)) {
+			if(!filteredCountry.equalsIgnoreCase("") &&
+					!flight.getToLocation().getCountry().equalsIgnoreCase(filteredCountry) &&
+					!flight.getFromLocation().getCountry().equalsIgnoreCase(filteredCountry)) {
+				flightsLeft.remove(flight);
+				continue;
+			}
+			if(!filteredCity.equalsIgnoreCase("") &&
+					!flight.getToLocation().getCity().equalsIgnoreCase(filteredCity) &&
+					!flight.getFromLocation().getCity().equalsIgnoreCase(filteredCity)) {
+				flightsLeft.remove(flight);
+				continue;
+			}
+			if(!filteredAirportName.equalsIgnoreCase("") &&
+					!flight.getToLocation().getCity().equalsIgnoreCase(filteredAirportName) &&
+					!flight.getFromLocation().getCity().equalsIgnoreCase(filteredAirportName)) {
 				flightsLeft.remove(flight);
 				continue;
 			}
 			if(flight.getDate().before(filteredFromDate)) {
-				System.out.println("hello");
 				flightsLeft.remove(flight);
 				continue;
 			}
@@ -91,8 +106,16 @@ public class FlightFilter {
 		filteredCompany = company;
 	}
 	
-	public void applyLocation(String location){
-		filteredLocation = location;
+	public void applyCountry(String country){
+		filteredCountry = country;
+	}
+	
+	public void applyCity(String city){
+		filteredCity = city;
+	}
+	
+	public void applyAirportName(String airportName){
+		filteredAirportName = airportName;
 	}
 	
 	public void applyFromDate(Date from) {
@@ -110,6 +133,11 @@ public class FlightFilter {
 			filteredDaysOfWeek[day] = true; //Filter only selected days 
 	}
 	
+	//Input: list of days to be filtered, as numbers from 0-6
+	public void applySingleDayOfWeek(boolean[] days) {
+		filteredDaysOfWeek = days;
+	}
+	
 	
 	//Region - remove function for everyfilter
 	
@@ -117,7 +145,9 @@ public class FlightFilter {
 		departuresOnly = false;
 		arrivalsOnly = false;
 		filteredCompany = "";
-		filteredLocation = "";
+		filteredCountry = "";
+		filteredCity = "";
+		filteredAirportName = "";
 		filteredFromDate = new Date(Long.MIN_VALUE); //Minimum date
 		filteredToDate = new Date(Long.MAX_VALUE); //Maximum date
 		Arrays.fill(filteredDaysOfWeek, true);
