@@ -1,0 +1,182 @@
+<html style="font-family:Arial;font-size:20px">
+<h2 style="padding-top:10px;margin-bottom:10px;font-size:32px"><strong>Airport Flights - Group 7 Tools Workshop 2020</strong></h2>
+
+<div>
+    <legend id="created_by" style="font-size:20px"><strong>Created by:</strong></legend>
+    <table style="font-size:19px" cellpadding="8">
+       <tbody>
+           <tr><td>name1</td><td>id1</td></tr>
+           <tr><td>name2</td><td>id2</td></tr>
+           <tr><td>Idan Koren-Israeli</td><td>211546288</td></tr>
+       </tbody>
+    </table>
+<div/>
+
+
+<hr/>
+
+<form>
+    <fieldset data-role = "none"  style="width:60%">
+        <legend style="font-weight:bold">Apply Filters</legend>
+        <input id='outformat' type='hidden' value='html' name='outformat'>
+        <div style="line-height: 1.85;">
+            <div data-type = "horizontal">
+                <input style="width:20px;height:20px" type = "checkbox" id = "box_departures" />
+                <label for = "checkbox 1">Departures</label>
+            
+                <input style="width:20px;height:20px;margin-left:25px" type = "checkbox" id = "box_arrivals" />
+                <label for = "checkbox 2">Arrivals</label>
+            </div>
+    
+            <div style="padding-top:24px" data-type = "horizontal">
+                <label>Country:</label>
+                <input style="width:120px;font-size:21px" type="text" id="country_text" name="country">  
+                
+                <label style="padding-left:20px;">City:</label>
+                <input style="width:120px;font-size:21px" type="text" id="city_text" name="city">  
+            <div/>
+            
+            <div style="padding-top:24px" data-type = "horizontal">
+                <label>Airport Name:</label>
+                <input style="width:120px;font-size:21px" type="text" id="airport_name" name="airport">  
+            <div/>
+            
+            <div style="padding-top:8px" data-type = "horizontal">
+                <label>Airline Name:</label>
+                <input style="width:120px;font-size:21px" type="text" id="airline_name" name="airline">  
+            <div/>
+    
+        <table style="font-size:19px;padding-top:24px" cellspacing="4" cellpadding="5">
+        <tbody>
+            <tr>
+                <td>
+                    <label>From Date:</label>
+                </td>
+                <td>
+                    <label style="padding-left:20px;">Day:</label>
+                    <input style="width:60px;font-size:21px" type="number" id="day1" name="day1">
+                </td>
+                <td>
+                    <label style="padding-left:20px;">Month:</label>
+                    <input style="width:60px;font-size:21px" type="number" id="month1" name="month1">
+                </td>
+                <td>
+                    <label style="padding-left:20px;">Year:</label>
+                    <input style="width:120px;font-size:21px" type="number" id="year1" name="year1">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label">To Date:</label>
+                </td>
+                <td>
+                    <label style="padding-left:20px;">Day:</label>
+                    <input style="width:60px;font-size:21px" type="number" id="day2" name="day2">
+                </td>
+                <td>
+                    <label style="padding-left:20px;">Month:</label>
+                    <input style="width:60px;font-size:21px" type="number" id="month2" name="month2">
+                </td>
+                <td>
+                    <label style="padding-left:20px;">Year:</label>
+                    <input style="width:120px;font-size:21px" type="number" id="year2" name="year2">
+                </td>
+            </tr>
+        </tbody>
+        </table>
+            
+            
+            <div style="padding-top:24px" data-type = "horizontal">
+                <input style="width:19px;height:16px" type = "checkbox" name = "sunday" id = "box_sunday" value="true"/>
+                <input id='sunday_box_hidden' type='hidden' value='false' name='sunday'>
+                <label>Sunday</label>
+            
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "monday" id = "box_monday" value="true"/>
+                <input id='monday_box_hidden' type='hidden' value='false' name='monday'>
+                <label>Monday</label>
+                
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "tuesday" id = "box_tuesday" value="true"/>
+                <input id='tuesday_box_hidden' type='hidden' value='false' name='tuesday'>
+                <label>Tuesday</label>
+                
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "wednesday" id = "box_wednesday" value="true"/>
+                <input id='wednesday_box_hidden' type='hidden' value='false' name='wednesday'>
+                <label>Wednesday</label>
+            
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "thursday" id = "box_thursday" value="true"/>
+                <input id='thursday_box_hidden' type='hidden' value='false' name='thursday'>
+                <label>Thursday</label>
+                
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "friday" id = "box_friday" value="true" />
+                <input id='friday_box_hidden' type='hidden' value='false' name='friday'>
+                <label>Friday</label>
+                
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "saturday" id = "box_saturday" value="true"/>
+                <input id='saturday_box_hidden' type='hidden' value='false' name='saturday'>
+                <label>Saturday</label>
+            </div>
+            
+            <div>
+                <input type="submit" style="margin-top:28px;width:180px;height:40px;font-size:22px" value="Apply Filters">
+            </div>
+    </div>
+
+   </fieldset>
+</form>
+<br/>
+<h3>Results</h3>
+<table style="height: 248px; width: 860px;" border="3" bordercolor="#00000">
+<tbody>
+<tr>
+<td style="width: 66.2px; text-align: center;">Flight ID</td>
+<td style="width: 76.8px; text-align: center;">Type (D/A)</td>
+<td style="width: 68px; text-align: center;">Company</td>
+<td style="width: 61px; text-align: center;">Source</td>
+<td style="width: 84px; text-align: center;">Destination</td>
+<td style="width: 56px; text-align: center;">Date</td>
+<td style="width: 55px; text-align: center;">Time</td>
+<td style="width: 56px; text-align: center;">Terminal</td>
+</tr>
+<tr>
+<td style="width: 66.2px; text-align: center;">&nbsp;W62325</td>
+<td style="width: 76.8px; text-align: center;">Departure</td>
+<td style="width: 68px; text-align: center;">Wizz Air</td>
+<td style="width: 61px; text-align: center;">Ben Gurion</td>
+<td style="width: 84px; text-align: center;">Prague</td>
+<td style="width: 56px; text-align: center;">09/07/18</td>
+<td style="width: 55px; text-align: center;">9:35</td>
+<td style="width: 56px; text-align: center;">1</td>
+</tr>
+<tr>
+<td style="width: 66.2px; text-align: center;">&nbsp;</td>
+<td style="width: 76.8px; text-align: center;">&nbsp;</td>
+<td style="width: 68px; text-align: center;">&nbsp;</td>
+<td style="width: 61px; text-align: center;">&nbsp;</td>
+<td style="width: 84px; text-align: center;">&nbsp;</td>
+<td style="width: 56px; text-align: center;">&nbsp;</td>
+<td style="width: 55px; text-align: center;">&nbsp;</td>
+<td style="width: 56px; text-align: center;">&nbsp;</td>
+</tr>
+<tr>
+<td style="width: 66.2px; text-align: center;">&nbsp;</td>
+<td style="width: 76.8px; text-align: center;">&nbsp;</td>
+<td style="width: 68px; text-align: center;">&nbsp;</td>
+<td style="width: 61px; text-align: center;">&nbsp;</td>
+<td style="width: 84px; text-align: center;">&nbsp;</td>
+<td style="width: 56px; text-align: center;">&nbsp;</td>
+<td style="width: 55px; text-align: center;">&nbsp;</td>
+<td style="width: 56px; text-align: center;">&nbsp;</td>
+</tr>
+<tr>
+<td style="width: 66.2px; text-align: center;">&nbsp;</td>
+<td style="width: 76.8px; text-align: center;">&nbsp;</td>
+<td style="width: 68px; text-align: center;">&nbsp;</td>
+<td style="width: 61px; text-align: center;">&nbsp;</td>
+<td style="width: 84px; text-align: center;">&nbsp;</td>
+<td style="width: 56px; text-align: center;">&nbsp;</td>
+<td style="width: 55px; text-align: center;">&nbsp;</td>
+<td style="width: 56px; text-align: center;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</html>
