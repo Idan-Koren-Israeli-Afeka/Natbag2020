@@ -35,6 +35,7 @@ public class FlightFilter {
 	
 	
 	//This function will use current applied filters to remove flights from the result
+	@SuppressWarnings("deprecation")
 	public ArrayList<Flight> filter(){
 		ArrayList<Flight> flightsLeft = new ArrayList<>(airport.getAllFlights());
 	
@@ -72,12 +73,13 @@ public class FlightFilter {
 				flightsLeft.remove(flight);
 				continue;
 			}
-			if(flight.getDate().before(filteredFromDate)) {
+			if(flight.getDate().after(filteredFromDate)) {
+				System.out.println("Removing Flight " + flight + " Because " + flight.getDate() + " is after" + filteredToDate);
 				flightsLeft.remove(flight);
 				continue;
 			}
-			if(flight.getDate().after(filteredToDate)) {
-				System.out.println("bye");
+			if(flight.getDate().before(filteredToDate)) {
+				System.out.println("Removing Flight " + flight + " Because " + flight.getDate() + " is before" + filteredToDate);
 				flightsLeft.remove(flight);
 				continue;
 			}

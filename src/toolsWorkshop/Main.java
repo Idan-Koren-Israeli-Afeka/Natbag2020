@@ -36,7 +36,8 @@ public class Main {
 		
 		if(args.length>0 && args[0].equals("html")) {
 			loadFlights(airport);
-			printWebPage(airport.getAllFlights());
+			ArrayList<Flight> toPrint = generateFilterFromArgs(airport, args).filter();
+			printWebPage(toPrint);
 			//Right now it prints all flights of the airport, we have to put the generated filter on it
 		}
 		else {
@@ -298,9 +299,17 @@ public class Main {
 		result.applyAirportName(allArgs[4].toLowerCase());
 		result.applyCompany(allArgs[5].toLowerCase());
 		
+		//Edge case - no valid input for date, end date will be max, start date will be min possible
+		Date fromDate, toDate;
+		if(isInputDateValid(allArgs[8],allArgs[7],allArgs[6]))
+			fromDate =  new Date(Integer.parseInt(allArgs[8]),Integer.parseInt(allArgs[7])-1,Integer.parseInt(allArgs[6]),0,0);
+		else
+			fromDate = new Date(Long.MIN_VALUE);
 		
-		Date fromDate = new Date(Integer.parseInt(allArgs[8]),Integer.parseInt(allArgs[7])-1,Integer.parseInt(allArgs[6]),0,0);
-		Date toDate = new Date(Integer.parseInt(allArgs[11]),Integer.parseInt(allArgs[10])-1,Integer.parseInt(allArgs[9]),23,59);
+		if(isInputDateValid(allArgs[11],allArgs[10],allArgs[9]))
+			toDate = new Date(Integer.parseInt(allArgs[11]),Integer.parseInt(allArgs[10])-1,Integer.parseInt(allArgs[9]),23,59);
+		else
+			toDate = new Date(Long.MAX_VALUE);
 		result.applyFromDate(fromDate);
 		result.applyToDate(toDate);
 		
@@ -314,6 +323,20 @@ public class Main {
 		
 		
 		return result;
+	}
+	
+	public static boolean isInputDateValid(String year, String month, String day) {
+		if(year.equals("") || month.equals("") || day.equals(""))
+			return false;
+		try {
+			Integer.parseInt(year);
+			Integer.parseInt(month);
+			Integer.parseInt(day);
+		}
+		catch(Exception e) {
+			return false;
+		}
+		return true; //Date is not null and its made of numbers only
 	}
 	
 

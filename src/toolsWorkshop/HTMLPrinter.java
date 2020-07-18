@@ -27,8 +27,6 @@ public class HTMLPrinter {
 	
 	
 	public void printPage(ArrayList<Flight> flightsToPrint) {
-		
-
 		try  {
 			File file=new File(HTML_FILE_NAME); 
 			FileReader fr=new FileReader(file); 
