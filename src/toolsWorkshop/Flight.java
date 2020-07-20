@@ -1,8 +1,6 @@
 package toolsWorkshop;
 
 import java.io.Serializable;
-import java.util.Date;
-
 /**
  * @author 97254
  *
@@ -22,12 +20,12 @@ public class Flight implements Serializable {
 	private String flightCompany; // for example: ELAL
 	private Airport fromLocation; // can be airport
 	private Airport toLocation; // can be airport
-	private Date date;
+	private DateTime date;
 	public static String[] daysOfWeek = {"saturday", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday"};
 	private int terminal;
 	private FlightType flightType; // false = Departure, true = Arrival
 
-	public Flight(String flightID, String flightCompany, Airport fromLocation, Airport toLocation, Date date,
+	public Flight(String flightID, String flightCompany, Airport fromLocation, Airport toLocation, DateTime date,
 			int terminal, FlightType flightType) {
 		super();
 		setFlightID(flightID);
@@ -75,11 +73,11 @@ public class Flight implements Serializable {
 		this.toLocation = toLocation;
 	}
 
-	public Date getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.date = date;
 	}
 
@@ -99,12 +97,11 @@ public class Flight implements Serializable {
 		this.flightType = flightType;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public String toString() {
 		return "Flight number " + flightID + " by " + flightCompany + ", from " + fromLocation + " to " + toLocation
-				+ ", on " + date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getYear() + ", at " + date.getHours()
-				+ ":" + date.getMinutes() + ", day of week: " + daysOfWeek[date.getDay()] + ", flight type: " + 
+				+ ", on "+ date.toDateString()+" at " + date.toHourString()
+				+ ", day of week: " + daysOfWeek[date.getDay()] + ", flight type: " + 
 				(flightType == FlightType.Arrival? "arrival" : "departure");
 	}
 }

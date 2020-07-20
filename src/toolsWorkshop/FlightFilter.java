@@ -2,7 +2,6 @@ package toolsWorkshop;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 import toolsWorkshop.Flight.FlightType;
 
@@ -18,8 +17,8 @@ public class FlightFilter {
 	private String filteredCountry;
 	private String filteredCity;
 	private String filteredAirportName;
-	private Date filteredFromDate;
-	private Date filteredToDate;
+	private DateTime filteredFromDate;
+	private DateTime filteredToDate;
 	private boolean[] filteredDaysOfWeek = new boolean[7];
 	
 	private FlightFilter(Airport airport) {
@@ -35,7 +34,6 @@ public class FlightFilter {
 	
 	
 	//This function will use current applied filters to remove flights from the result
-	@SuppressWarnings("deprecation")
 	public ArrayList<Flight> filter(){
 		ArrayList<Flight> flightsLeft = new ArrayList<>(airport.getAllFlights());
 	
@@ -73,18 +71,16 @@ public class FlightFilter {
 				flightsLeft.remove(flight);
 				continue;
 			}
-			if(flight.getDate().after(filteredFromDate)) {
-				System.out.println("Removing Flight " + flight + " Because " + flight.getDate() + " is after" + filteredToDate);
+			if(flight.getDate().before(filteredFromDate)) {
 				flightsLeft.remove(flight);
 				continue;
 			}
-			if(flight.getDate().before(filteredToDate)) {
-				System.out.println("Removing Flight " + flight + " Because " + flight.getDate() + " is before" + filteredToDate);
+			if(flight.getDate().after(filteredToDate)) {
 				flightsLeft.remove(flight);
 				continue;
 			}
 			for(int day=0;day < 7; day++) {
-				if(filteredDaysOfWeek[day] == false && flight.getDate().getDay() == day)
+				if(filteredDaysOfWeek[day] == false && flight.getDate().getDayOfWeek() == day)
 					flightsLeft.remove(flight);
 			}
 		}
@@ -120,28 +116,20 @@ public class FlightFilter {
 		filteredAirportName = airportName;
 	}
 	
-	public void applyFromDate(Date from) {
+	public void applyFromDate(DateTime from) {
 		filteredFromDate = from;
 	}
 	
-	public void applyToDate(Date to) {
+	public void applyToDate(DateTime to) {
 		filteredToDate = to;
 	}
 	
-	//Input: list of days to be filtered, as numbers from 0-6
-	public void applySingleDayOfWeek(int... days) {
-		Arrays.fill(filteredDaysOfWeek, false);
-		for(int day : days)
-			filteredDaysOfWeek[day] = true; //Filter only selected days 
-	}
 	
-	//Input: list of days to be filtered, as numbers from 0-6
-	public void applySingleDayOfWeek(boolean[] days) {
+	public void applyDaysOfWeek(boolean[] days) {
 		filteredDaysOfWeek = days;
 	}
 	
 	
-	//Region - remove function for everyfilter
 	
 	public void removeAllFilters() {
 		departuresOnly = false;
@@ -150,8 +138,8 @@ public class FlightFilter {
 		filteredCountry = "";
 		filteredCity = "";
 		filteredAirportName = "";
-		filteredFromDate = new Date(Long.MIN_VALUE); //Minimum date
-		filteredToDate = new Date(Long.MAX_VALUE); //Maximum date
+		filteredFromDate = DateTime.MIN_DATE; //Minimum date
+		filteredToDate = DateTime.MAX_DATE; //Maximum date
 		Arrays.fill(filteredDaysOfWeek, true);
 	}
 	

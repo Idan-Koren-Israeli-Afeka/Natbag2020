@@ -14,7 +14,6 @@ import java.util.Scanner;
 
 import toolsWorkshop.Flight.FlightType;
 
-@SuppressWarnings("deprecation")
 public class Main {
 	
 	final static String MAIN_MENU_MESSAGE = "\nMain Menu: (choose an option)\n" + "1. Add a new flight\n" + "2. Remove a flight\n"
@@ -119,12 +118,12 @@ public class Main {
 				break;
 
 			case 5: // from date
-				Date fromDate = getDateFromUser(in);
+				DateTime fromDate = getDateFromUser(in);
 				menu.applyFromDate(fromDate);
 				break;
 
 			case 6: // to date
-				Date toDate = getDateFromUser(in);
+				DateTime toDate = getDateFromUser(in);
 				menu.applyToDate(toDate);
 				break;
 
@@ -205,7 +204,7 @@ public class Main {
 		System.out.println("Please enter terminal: ");
 		int terminal = in.nextInt();
 
-		Date date = getDateFromUser(in);
+		DateTime date = getDateFromUser(in);
 		Flight newFlight = null;
 		if (flightType == FlightType.Arrival) {
 			newFlight = new Flight(flightID, flightCompany, flightAirport , airport, date, terminal,
@@ -262,7 +261,7 @@ public class Main {
 		}
 	}
 	
-	public static Date getDateFromUser(Scanner in)
+	public static DateTime getDateFromUser(Scanner in)
 	{
 		System.out.println("Please enter year:");
 		int year = in.nextInt();
@@ -273,12 +272,15 @@ public class Main {
 		System.out.println("Please enter day (in month):");
 		int day = in.nextInt();
 
+		System.out.println("Please enter day of week: (0 for Sunday, 6 for Saturday)" );
+		int dayOfWeek = in.nextInt();
+		
 		System.out.println("Please enter time (hours and minutes) in format xx:xx");
 		String[] timeInDay = in.next().split(":");
 		int hours = Integer.parseInt(timeInDay[0]);
 		int minutes = Integer.parseInt(timeInDay[1]);
 
-		return new Date(year, month, day, hours, minutes);
+		return new DateTime(day,month,year, dayOfWeek, hours, minutes);
 	}
 	
 	
@@ -300,16 +302,16 @@ public class Main {
 		result.applyCompany(allArgs[5].toLowerCase());
 		
 		//Edge case - no valid input for date, end date will be max, start date will be min possible
-		Date fromDate, toDate;
-		if(isInputDateValid(allArgs[8],allArgs[7],allArgs[6]))
-			fromDate =  new Date(Integer.parseInt(allArgs[8]),Integer.parseInt(allArgs[7])-1,Integer.parseInt(allArgs[6]),0,0);
+		DateTime fromDate, toDate;
+		if(isInputDateValid(allArgs[6],allArgs[7],allArgs[8]))
+			fromDate = new DateTime(Integer.parseInt(allArgs[6]),Integer.parseInt(allArgs[7]),Integer.parseInt(allArgs[8]),0,0);
 		else
-			fromDate = new Date(Long.MIN_VALUE);
+			fromDate = DateTime.MIN_DATE;
 		
-		if(isInputDateValid(allArgs[11],allArgs[10],allArgs[9]))
-			toDate = new Date(Integer.parseInt(allArgs[11]),Integer.parseInt(allArgs[10])-1,Integer.parseInt(allArgs[9]),23,59);
+		if(isInputDateValid(allArgs[9],allArgs[10],allArgs[11]))
+			toDate = new DateTime(Integer.parseInt(allArgs[9]),Integer.parseInt(allArgs[10]),Integer.parseInt(allArgs[11]),23,59);
 		else
-			toDate = new Date(Long.MAX_VALUE);
+			toDate = DateTime.MAX_DATE;
 		result.applyFromDate(fromDate);
 		result.applyToDate(toDate);
 		
@@ -320,12 +322,13 @@ public class Main {
 			else
 				daysOfWeek[i-12] = true;
 		}
+		result.applyDaysOfWeek(daysOfWeek);
 		
 		
 		return result;
 	}
 	
-	public static boolean isInputDateValid(String year, String month, String day) {
+	public static boolean isInputDateValid(String day, String month, String year) {
 		if(year.equals("") || month.equals("") || day.equals(""))
 			return false;
 		try {

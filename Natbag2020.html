@@ -91,19 +91,19 @@
                 <input id='sunday_box_hidden' type='hidden' value='false' name='sunday'>
                 <label>Sunday</label>
             
-                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "monday" id = "box_monday" value="true"/>
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "monday" id = "box_monday" value="true" />
                 <input id='monday_box_hidden' type='hidden' value='false' name='monday'>
                 <label>Monday</label>
                 
-                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "tuesday" id = "box_tuesday" value="true"/>
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "tuesday" id = "box_tuesday" value="true" />
                 <input id='tuesday_box_hidden' type='hidden' value='false' name='tuesday'>
                 <label>Tuesday</label>
                 
-                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "wednesday" id = "box_wednesday" value="true"/>
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "wednesday" id = "box_wednesday" value="true" />
                 <input id='wednesday_box_hidden' type='hidden' value='false' name='wednesday'>
                 <label>Wednesday</label>
             
-                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "thursday" id = "box_thursday" value="true"/>
+                <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "thursday" id = "box_thursday" value="true" />
                 <input id='thursday_box_hidden' type='hidden' value='false' name='thursday'>
                 <label>Thursday</label>
                 
@@ -114,10 +114,13 @@
                 <input style="width:19px;height:19px;margin-left:20px" type = "checkbox" name = "saturday" id = "box_saturday" value="true"/>
                 <input id='saturday_box_hidden' type='hidden' value='false' name='saturday'>
                 <label>Saturday</label>
+				
+				
             </div>
             
             <div>
-                <input type="submit" style="margin-top:28px;width:180px;height:40px;font-size:22px" value="Apply Filters">
+                <input type="submit"style="margin-top:28px;width:180px;height:40px;font-size:22px" value="Apply Filters">
+				<a href="#bottom"></a>
             </div>
     </div>
 
@@ -125,7 +128,7 @@
 </form>
 <br/>
 <h3>Results</h3>
-<table style="height: 248px; width: 860px;" border="3" bordercolor="#00000">
+<table style="height: 48px; width: 960px;" border="3" bordercolor="#00000">
 <tbody>
 <tr>
 <td style="width: 66.2px; text-align: center;">Flight ID</td>
@@ -133,8 +136,9 @@
 <td style="width: 68px; text-align: center;">Company</td>
 <td style="width: 61px; text-align: center;">Country</td>
 <td style="width: 84px; text-align: center;">City</td>
-<td style="width: 56px; text-align: center;">Airport</td>
-<td style="width: 56px; text-align: center;">Date</td>
-<td style="width: 55px; text-align: center;">Time</td>
+<td style="width: 86px; text-align: center;">Airport</td>
+<td style="width: 106px; text-align: center;">Date and Time</td>
 <td style="width: 56px; text-align: center;">Terminal</td>
 </tr>
+
+<div id="bottom"></div>

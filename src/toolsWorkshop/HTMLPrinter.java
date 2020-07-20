@@ -72,8 +72,7 @@ public class HTMLPrinter {
 				"<td style=\"width: 61px; text-align: center;\">"+ location.getCountry() +"</td>\r\n" + 
 				"<td style=\"width: 84px; text-align: center;\">" + location.getCity() + "</td>\r\n" + 
 				"<td style=\"width: 51px; text-align: center;\">" + location.getName() + "</td>\r\n" + 
-				"<td style=\"width: 56px; text-align: center;\">"+ flightToPrint.getDate().toString()+"</td>\r\n" + //Need to fix here
-				"<td style=\"width: 55px; text-align: center;\">" +flightToPrint.getDate().toString()+ "</td>\r\n" +  //Need to fix here
+				"<td style=\"width: 106px; text-align: center;\">"+ flightToPrint.getDate().toString()+"</td>\r\n" +
 				"<td style=\"width: 56px; text-align: center;\">"+flightToPrint.getTerminal()+"</td>\r\n" + 
 				"			</tr>");
 	}
