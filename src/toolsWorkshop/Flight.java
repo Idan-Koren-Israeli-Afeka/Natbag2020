@@ -100,8 +100,7 @@ public class Flight implements Serializable {
 	@Override
 	public String toString() {
 		return "Flight number " + flightID + " by " + flightCompany + ", from " + fromLocation + " to " + toLocation
-				+ ", on "+ date.toDateString()+" at " + date.toHourString()
-				+ ", day of week: " + daysOfWeek[date.getDay()] + ", flight type: " + 
+				+ ", on " + date.toString() + ",  flight type: " + 
 				(flightType == FlightType.Arrival? "arrival" : "departure");
 	}
 }

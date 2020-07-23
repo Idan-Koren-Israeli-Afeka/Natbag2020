@@ -124,7 +124,15 @@ public class DateTime implements Serializable {
 	}
 	
 	public String toHourString() {
-		return hour + ":" + minute;
+		StringBuilder s = new StringBuilder();
+		if(hour < 10)
+			s.append(0);
+		s.append(this.hour);
+		s.append(":");
+		if(minute < 10)
+			s.append(0);
+		s.append(this.minute);
+		return s.toString();
 	}
 	
 	public String toString() {
