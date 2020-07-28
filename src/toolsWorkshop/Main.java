@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 import toolsWorkshop.Flight.FlightType;
@@ -20,8 +19,8 @@ public class Main {
 			+ "3. Save flights to file\n" + "4. Load flights from file\n" + "5. Display flights menu\n";
 	
 	final static String FILTER_MENU_MESSAGE = "\nDisplay Menu: (choose an option)\n" + "1. Departures Only\n"
-			+ "2. Arrivals Only\n"+"3. Company\n" + "4. Location\n" + "5. From Date\n" + "6. To Date\n" + "7. Days of Week\n"
-			+ "8. Reset All Filters\n" + "Press any other key to go back";
+			+ "2. Arrivals Only\n"+"3. Company\n" + "4. Country\n" + "5. City\n"  + "6. Airport Name\n"  +"7. From Date\n" + "8. To Date\n" + "9. Days of Week\n"
+			+ "0. Reset All Filters\n" + "Press any other key to go back";
 	
 	
 	final static String FLIGHTS_FILE_NAME = "flights.obj";
@@ -110,29 +109,49 @@ public class Main {
 				menu.applyCompany(companyToFilter);
 				break;
 				
-			case 4: // location
-				System.out.println("Please enter location to filter:");
-				String locationToFilter = in.next();
-				//menu.applyLocation(locationToFilter);
-				//We have to change this area to Airport, Country, City to filter.
+			case 4: // Country
+				System.out.println("Please enter country to filter:");
+				String countryToFilter = in.next();
+				menu.applyCountry(countryToFilter);
+				break;
+				
+			case 5: // City
+				System.out.println("Please enter city to filter:");
+				String cityToFilter = in.next();
+				menu.applyCity(cityToFilter);
+				break;
+				
+			case 6: // Airport Name
+				System.out.println("Please enter airport name to filter:");
+				String airportNameToFilter = in.next();
+				menu.applyAirportName(airportNameToFilter);
 				break;
 
-			case 5: // from date
+			case 7: // from date
 				DateTime fromDate = getDateFromUser(in);
 				menu.applyFromDate(fromDate);
 				break;
 
-			case 6: // to date
+			case 8: // to date
 				DateTime toDate = getDateFromUser(in);
 				menu.applyToDate(toDate);
 				break;
 
-			case 7: // days of week
-				//flightsToDisplay = displayDaysOfWeek(in, airport, flightsToDisplay, temp);
-				//We have to set here each date as its bool value
+			case 9: // days of week
+				boolean[] daysFilter = new boolean[7];
+				System.out.println("Choose days of week to show: 0 represents sunday, 6 represents saturday");
+				for(int i=0;i<7;i++) {
+					System.out.print("Insert day of week #" + i + " (y/n): ");
+					String option = in.next();
+					if(option.equalsIgnoreCase("y"))
+						daysFilter[i] = true;
+					else
+						daysFilter[i] = false;	
+				}
+				menu.applyDaysOfWeek(daysFilter);
 				break;
 
-			case 8: // reset
+			case 0: // reset
 				menu.removeAllFilters();
 				break;
 
@@ -251,7 +270,6 @@ public class Main {
 				Flight flight = (Flight) objIn.readObject();
 				airport.addFlight(flight);
 			}
-			//System.out.println("\nflights loaded succesfully!"); - This should not be printed in HTML format
 		} catch (FileNotFoundException e) {
 			System.out.println("Load exception: File \"flights.obj\" was not found!");
 		} catch (IOException e) {

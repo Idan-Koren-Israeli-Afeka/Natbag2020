@@ -103,7 +103,7 @@ public class FlightFilter {
 	public void applyCompany(String company){
 		filteredCompany = company;
 	}
-	
+
 	public void applyCountry(String country){
 		filteredCountry = country;
 	}
