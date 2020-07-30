@@ -285,7 +285,7 @@ public class Main {
 		int year = in.nextInt();
 
 		System.out.println("Please enter month:");
-		int month = in.nextInt() - 1; // Date's Month is starting from zero
+		int month = in.nextInt();
 
 		System.out.println("Please enter day (in month):");
 		int day = in.nextInt();

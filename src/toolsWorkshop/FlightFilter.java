@@ -66,8 +66,8 @@ public class FlightFilter {
 				continue;
 			}
 			if(!filteredAirportName.equalsIgnoreCase("") &&
-					!flight.getToLocation().getCity().equalsIgnoreCase(filteredAirportName) &&
-					!flight.getFromLocation().getCity().equalsIgnoreCase(filteredAirportName)) {
+					!flight.getToLocation().getName().equalsIgnoreCase(filteredAirportName) &&
+					!flight.getFromLocation().getName().equalsIgnoreCase(filteredAirportName)) {
 				flightsLeft.remove(flight);
 				continue;
 			}
@@ -114,6 +114,7 @@ public class FlightFilter {
 	
 	public void applyAirportName(String airportName){
 		filteredAirportName = airportName;
+		System.out.println("APPLID " + airportName);
 	}
 	
 	public void applyFromDate(DateTime from) {
