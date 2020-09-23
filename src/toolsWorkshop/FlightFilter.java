@@ -114,7 +114,6 @@ public class FlightFilter {
 	
 	public void applyAirportName(String airportName){
 		filteredAirportName = airportName;
-		System.out.println("APPLID " + airportName);
 	}
 	
 	public void applyFromDate(DateTime from) {

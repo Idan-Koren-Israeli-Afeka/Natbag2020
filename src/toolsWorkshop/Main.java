@@ -22,16 +22,19 @@ public class Main {
 			+ "2. Arrivals Only\n"+"3. Company\n" + "4. Country\n" + "5. City\n"  + "6. Airport Name\n"  +"7. From Date\n" + "8. To Date\n" + "9. Days of Week\n"
 			+ "0. Reset All Filters\n" + "Press any other key to go back";
 	
-	
 	final static String FLIGHTS_FILE_NAME = "flights.obj";
-	
 	
 	
 	public static void main(String[] args) {
 		Airport airport = new Airport("TLV", "Israel", "Tel Aviv");
-				
-		
-		
+
+		if(args.length>0 && args[0].equals("text")) {
+			loadFlights(airport);
+			ArrayList<Flight> toPrint = generateFilterFromArgs(airport, args).filter();
+			System.out.println(toPrint);
+			//Right now it prints all flights of the airport, we have to put the generated filter on it
+		}
+		else
 		if(args.length>0 && args[0].equals("html")) {
 			loadFlights(airport);
 			ArrayList<Flight> toPrint = generateFilterFromArgs(airport, args).filter();
@@ -44,7 +47,6 @@ public class Main {
 			boolean stopMenu = false; 
 			do {
 				System.out.println(MAIN_MENU_MESSAGE);
-	
 				int option = in.nextInt();
 				switch (option) {
 	
@@ -314,10 +316,10 @@ public class Main {
 			break;
 		}
 		
-		result.applyCountry(allArgs[2].toLowerCase());
-		result.applyCity(allArgs[3].toLowerCase());
-		result.applyAirportName(allArgs[4].toLowerCase());
-		result.applyCompany(allArgs[5].toLowerCase());
+		result.applyCountry(allArgs[3].toLowerCase());
+		result.applyCity(allArgs[4].toLowerCase());
+		result.applyAirportName(allArgs[5].toLowerCase());
+		result.applyCompany(allArgs[2].toLowerCase());
 		
 		//Edge case - no valid input for date, end date will be max, start date will be min possible
 		DateTime fromDate, toDate;

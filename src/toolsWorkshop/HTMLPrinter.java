@@ -25,7 +25,6 @@ public class HTMLPrinter {
 		return single_instance;
 	}
 	
-	
 	public void printPage(ArrayList<Flight> flightsToPrint) {
 		try  {
 			File file=new File(HTML_FILE_NAME); 
@@ -42,7 +41,7 @@ public class HTMLPrinter {
 		}  
 		catch(IOException e)  
 		{  
-			e.printStackTrace();  
+			e.printStackTrace();
 		}
 
 		
